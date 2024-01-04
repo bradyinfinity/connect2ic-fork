@@ -19,10 +19,17 @@ export default {
   input: "src/index.ts",
   output: [
     {
-      file: pkg.module, sourcemap: true, format: "es", inlineDynamicImports: true,
+      file: pkg.module,
+      sourcemap: true,
+      format: "es",
+      inlineDynamicImports: true,
     },
     {
-      file: pkg.main, sourcemap: true, format: "umd", name, inlineDynamicImports: true,
+      file: pkg.main,
+      sourcemap: true,
+      format: "umd",
+      name,
+      inlineDynamicImports: true,
     },
   ],
   plugins: [

@@ -22,13 +22,6 @@ export type {
   TransferResult,
 } from "./providers/connectors"
 
-export type {
-  RootEvent,
-  RootContext,
-  Provider,
-  Client,
-}
+export type { RootEvent, RootContext, Provider, Client }
 
-export {
-  createClient,
-}
+export { createClient }

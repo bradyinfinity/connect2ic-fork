@@ -27,23 +27,26 @@ type Config = {
 
 let isICX = !!window.icx
 
-export const defaultProviders: (config: Config) => Array<Provider> = (config) => {
-  return isICX ? [new ICX(config)] : [
-    new AstroX(config),
-    // EarthWallet,
-    new InfinityWallet(config),
-    new InternetIdentity(config),
-    new NFID(config),
-    new PlugWallet(config),
-    new StoicWallet(config),
-  ]
+export const defaultProviders: (config: Config) => Array<Provider> = (
+  config,
+) => {
+  return isICX
+    ? [new ICX(config)]
+    : [
+        new AstroX(config),
+        // EarthWallet,
+        new InfinityWallet(config),
+        new InternetIdentity(config),
+        new NFID(config),
+        new PlugWallet(config),
+        new StoicWallet(config),
+      ]
 }
 
 export const walletProviders: (Config) => Array<WalletProvider> = (config) => {
-  return isICX ? [new ICX(config)] : [
-    new AstroX(config),
-    new PlugWallet(config),
-  ]
+  return isICX
+    ? [new ICX(config)]
+    : [new AstroX(config), new PlugWallet(config)]
 }
 
 export {

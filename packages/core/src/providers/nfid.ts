@@ -6,14 +6,15 @@ import nfidLogoLight from "../assets/nfid.png"
 // @ts-ignore
 import nfidLogoDark from "../assets/nfid.png"
 import { IDL } from "@dfinity/candid"
+import { ok, err } from "neverthrow"
 import {
-  ok,
-  err,
-} from "neverthrow"
-import { ConnectError, CreateActorError, DisconnectError, InitError } from "./connectors"
+  ConnectError,
+  CreateActorError,
+  DisconnectError,
+  InitError,
+} from "./connectors"
 
 class NFID implements IConnector {
-
   public meta = {
     features: [],
     icon: {
@@ -25,11 +26,11 @@ class NFID implements IConnector {
   }
 
   #config: {
-    whitelist: Array<string>,
-    appName: string,
-    host: string,
-    providerUrl: string,
-    dev: Boolean,
+    whitelist: Array<string>
+    appName: string
+    host: string
+    providerUrl: string
+    dev: Boolean
   }
   #identity?: any
   #principal?: string
@@ -94,7 +95,10 @@ class NFID implements IConnector {
     }
   }
 
-  async createActor<Service>(canisterId: string, idlFactory: IDL.InterfaceFactory) {
+  async createActor<Service>(
+    canisterId: string,
+    idlFactory: IDL.InterfaceFactory,
+  ) {
     try {
       // TODO: allow passing identity?
       const agent = new HttpAgent({
@@ -104,7 +108,10 @@ class NFID implements IConnector {
 
       if (this.#config.dev) {
         // Fetch root key for certificate validation during development
-        const res = await agent.fetchRootKey().then(() => ok(true)).catch(e => err({ kind: CreateActorError.FetchRootKeyFailed }))
+        const res = await agent
+          .fetchRootKey()
+          .then(() => ok(true))
+          .catch((e) => err({ kind: CreateActorError.FetchRootKeyFailed }))
         if (res.isErr()) {
           return res
         }
@@ -126,7 +133,9 @@ class NFID implements IConnector {
       await new Promise((resolve, reject) => {
         this.#client.login({
           // TODO: local
-          identityProvider: this.#config.providerUrl + `/authenticate/?applicationName=${this.#config.appName}`,
+          identityProvider:
+            this.#config.providerUrl +
+            `/authenticate/?applicationName=${this.#config.appName}`,
           onSuccess: resolve,
           onError: reject,
         })
@@ -157,6 +166,4 @@ class NFID implements IConnector {
   }
 }
 
-export {
-  NFID,
-}
+export { NFID }

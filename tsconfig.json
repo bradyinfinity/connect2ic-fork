@@ -4,10 +4,7 @@
     "declaration": true,
     "target": "esnext",
     "module": "commonjs",
-    "lib": [
-      "esnext",
-      "dom"
-    ],
+    "lib": ["esnext", "dom"],
     "strict": true,
     "jsx": "react-jsx",
     "noImplicitAny": false,

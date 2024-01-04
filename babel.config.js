@@ -5,9 +5,12 @@
 module.exports = {
   presets: ["@babel/preset-typescript", "@babel/preset-react"],
   plugins: [
-    ["inline-import-data-uri", {
-      "extensions": [".png", ".svg", ".jpg"],
-    }],
+    [
+      "inline-import-data-uri",
+      {
+        extensions: [".png", ".svg", ".jpg"],
+      },
+    ],
   ],
   // extensions: [".js", ".mjs", ".svelte", ".html", ".vue", ".ts", ".jsx", ".tsx"],
 

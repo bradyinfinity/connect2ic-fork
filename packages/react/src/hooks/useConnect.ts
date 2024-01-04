@@ -9,20 +9,16 @@ type Props = {
 
 export const useConnect = (props: Props = {}) => {
   // TODO: handle
-  const {
-    onConnect = () => {
-    },
-    onDisconnect = () => {
-    },
-  } = props
-  const {
-    client,
-  } = useContext(Connect2ICContext)
-  const { principal, activeProvider, status } = useSelector(client._service, (state) => ({
-    principal: state.context.principal,
-    activeProvider: state.context.activeProvider,
-    status: state.value,
-  }))
+  const { onConnect = () => {}, onDisconnect = () => {} } = props
+  const { client } = useContext(Connect2ICContext)
+  const { principal, activeProvider, status } = useSelector(
+    client._service,
+    (state) => ({
+      principal: state.context.principal,
+      activeProvider: state.context.activeProvider,
+      status: state.value,
+    }),
+  )
 
   useEffect(() => {
     const unsub = client.on("connect", onConnect)
@@ -37,10 +33,13 @@ export const useConnect = (props: Props = {}) => {
     principal,
     activeProvider,
     status,
-    isInitializing: client._service.state?.matches({ idle: "initializing" }) ?? false,
+    isInitializing:
+      client._service.state?.matches({ idle: "initializing" }) ?? false,
     isConnected: client._service.state?.matches({ idle: "connected" }) ?? false,
-    isConnecting: client._service.state?.matches({ idle: "connecting" }) ?? false,
-    isDisconnecting: client._service.state?.matches({ idle: "disconnecting" }) ?? false,
+    isConnecting:
+      client._service.state?.matches({ idle: "connecting" }) ?? false,
+    isDisconnecting:
+      client._service.state?.matches({ idle: "disconnecting" }) ?? false,
     isIdle: client._service.state?.matches({ idle: "idle" }) ?? false,
     connect: (provider: string) => {
       client.connect(provider)
@@ -53,4 +52,3 @@ export const useConnect = (props: Props = {}) => {
     },
   } as const
 }
-

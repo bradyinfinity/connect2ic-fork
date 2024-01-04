@@ -1,163 +1,190 @@
 .dialog-styles span {
-    font-family: -apple-system, BlinkMacSystemFont, "Arial", "Helvetica Neue", sans-serif;
+  font-family: monospace, "consolas";
 }
 
 .img-styles {
-    height: 55px;
-    width: 55px;
-    padding: 10px;
-    box-sizing: content-box;
+  height: 28px;
+  width: 28px;
+  padding: 10px;
+  box-sizing: content-box;
 }
 
 @media all and (max-width: 300px) {
-    .img-styles {
-        width: 11vw;
-        max-height: 11vw;
-        height: auto;
-        padding: 0;
-        padding-right: 5px;
-    }
+  .img-styles {
+    width: 11vw;
+    max-height: 11vw;
+    height: auto;
+    padding: 0;
+    padding-right: 5px;
+  }
 }
 
 .dialog-styles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: rgb(0 0 0 / 60%);
-    animation: fade-in 0.18s;
-    backdrop-filter: blur(5px);
-    cursor: pointer;
-    overflow: auto;
-    box-sizing: border-box;
-    padding: 30px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgb(0 0 0 / 60%);
+  animation: fade-in 0.18s;
+  backdrop-filter: blur(5px);
+  cursor: pointer;
+  overflow: auto;
+  box-sizing: border-box;
+  padding: 30px;
+}
+
+.dialog-header {
+  border-right: 0.15em solid #424242;
 }
 
 .dialog-container {
-    display: grid;
-    grid-gap: 5px;
-    padding: 10px;
-    background: #f4f4f4;
-    border-radius: 15px;
-    overflow: auto;
-    grid-template-columns: 1fr;
-    cursor: initial;
-    animation: move-in 0.18s;
-    max-width: 420px;
-    width: 100%;
-    box-sizing: border-box;
+  display: grid;
+  grid-gap: 5px;
+  padding: 10px;
+  background: #f4f4f4;
+  border-radius: 15px;
+  border: 0.1em solid #424242;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 1em;
+  cursor: initial;
+  animation: move-in 0.18s;
+  max-width: 420px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.button-container {
+  grid-column: 2 / -1;
 }
 
 .dark .dialog-container {
-    background: rgb(35 35 39);
+  background: rgb(35 35 39);
 }
 
 @keyframes fade-in {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes move-in {
-    from {
-        transform: translateY(5%);
-    }
-    to {
-        transform: translateY(0%);
-    }
+  from {
+    transform: translateY(5%);
+  }
+
+  to {
+    transform: translateY(0%);
+  }
 }
 
 @-webkit-keyframes fade-out {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 .button-styles {
-    background: transparent;
-    max-width: 100%;
-    width: 100%;
-    height: 75px;
-    padding: 10px;
-    border: none;
-    border-radius: 11px;
-    outline: 0;
-    cursor: pointer;
-    transition: transform 0.15s;
-    display: flex;
-    align-items: center;
+  background: transparent;
+  width: 100%;
+  height: 55px;
+  padding: 10px;
+  border: none;
+  border-radius: 11px;
+  outline: 0;
+  cursor: pointer;
+  transition: transform 0.15s;
+  display: flex;
+  align-items: center;
 }
 
 .dark .button-styles {
-    border: none;
+  border: none;
 }
 
 .button-label {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 21px;
-    font-weight: 300;
-    color: #424242;
-    text-align: left;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #424242;
+  text-align: left;
+  width: 250%;
 }
 
 .dark .button-label {
-    color: white;
+  color: white;
 }
 
 @media all and (max-width: 300px) {
-    .button-label {
-        font-size: 6vw;
-    }
+  .button-label {
+    font-size: 6vw;
+  }
 }
 
 .button-styles:hover {
-    transform: scale(1.02);
-    font-weight: 800!important;
-    transition: all 0.2s;
-    background: white;
+  transform: scale(1.02);
+  font-weight: 800 !important;
+  transition: all 0.2s;
+  background: white;
 }
 
 .dark .button-styles:hover {
-    background: #545454;
+  background: #151617;
 }
 
 .button-styles > div {
-    display: flex;
-    padding: 0 15px;
-    border-radius: 10px;
-    font-weight: 400;
-    height: 100%;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
+  display: flex;
+  padding: 0 15px;
+  border-radius: 10px;
+  font-weight: 400;
+  height: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 .connect-button {
-    font-size: 18px;
-    background: rgb(35 35 39);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    border-radius: 40px;
-    cursor: pointer;
+  font-size: 14px;
+  background: rgb(35 35 39);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  border-radius: 40px;
+  cursor: pointer;
+}
+
+.disconnect-button {
+  font-size: 18px;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: right;
+  border-radius: 0px;
+  cursor: pointer;
 }
 
 .connect-button:hover {
-    transform: scale(1.03);
-    transition: all 0.4s;
+  transform: scale(1.02);
+  transition: all 0.4s;
+}
+
+.disconnect-button:hover {
+  transform: scale(1.05);
+  transition: all 0.4s;
 }

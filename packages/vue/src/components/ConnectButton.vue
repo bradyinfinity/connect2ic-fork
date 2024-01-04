@@ -31,7 +31,6 @@ let { isConnected, disconnect, connect } = useConnect({
   onConnect,
   onDisconnect,
 })
-
 </script>
 
 <template>
@@ -39,8 +38,11 @@ let { isConnected, disconnect, connect } = useConnect({
     Disconnect
   </button>
 
-  <button v-if="!isConnected" class="connect-button" @click="() => isICX ? connect('icx') : open()">
+  <button
+    v-if="!isConnected"
+    class="connect-button"
+    @click="() => (isICX ? connect('icx') : open())"
+  >
     Connect
   </button>
 </template>
-

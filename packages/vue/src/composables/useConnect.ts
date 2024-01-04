@@ -9,21 +9,30 @@ type Props = {
 }
 
 const useConnect = (props: Props = {}) => {
-  const {
-    onConnect = () => {
-    },
-    onDisconnect = () => {
-    },
-  } = props
+  const { onConnect = () => {}, onDisconnect = () => {} } = props
   const { client } = inject(contextKey)
-  const principal = useSelector(client._service, state => state.context.principal)
-  const activeProvider = useSelector(client._service, state => state.context.activeProvider)
-  const status = useSelector(client._service, state => state.value)
+  const principal = useSelector(
+    client._service,
+    (state) => state.context.principal,
+  )
+  const activeProvider = useSelector(
+    client._service,
+    (state) => state.context.activeProvider,
+  )
+  const status = useSelector(client._service, (state) => state.value)
   const { state } = useActor(client._service)
-  const isConnected = computed(() => state.value.matches({ idle: "connected" }) ?? false)
-  const isInitializing = computed(() => state.value.matches({ idle: "initializing" }) ?? false)
-  const isConnecting = computed(() => state.value.matches({ idle: "connecting" }) ?? false)
-  const isDisconnecting = computed(() => state.value.matches({ idle: "disconnecting" }) ?? false)
+  const isConnected = computed(
+    () => state.value.matches({ idle: "connected" }) ?? false,
+  )
+  const isInitializing = computed(
+    () => state.value.matches({ idle: "initializing" }) ?? false,
+  )
+  const isConnecting = computed(
+    () => state.value.matches({ idle: "connecting" }) ?? false,
+  )
+  const isDisconnecting = computed(
+    () => state.value.matches({ idle: "disconnecting" }) ?? false,
+  )
   const isIdle = computed(() => state.value.matches({ idle: "idle" }) ?? false)
 
   let unsub

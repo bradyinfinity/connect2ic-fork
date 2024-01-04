@@ -15,9 +15,9 @@ type Props = {
 }
 
 const Connect2ICProvider: React.FC<PropsWithChildren<Props>> = ({
-                                                                  children,
-                                                                  client,
-                                                                }) => {
+  children,
+  client,
+}) => {
   const [open, setOpen] = useState<boolean>(false)
 
   const dialog = {
@@ -27,10 +27,12 @@ const Connect2ICProvider: React.FC<PropsWithChildren<Props>> = ({
   }
 
   return (
-    <Connect2ICContext.Provider value={{
-      client,
-      dialog,
-    }}>
+    <Connect2ICContext.Provider
+      value={{
+        client,
+        dialog,
+      }}
+    >
       {children}
     </Connect2ICContext.Provider>
   )

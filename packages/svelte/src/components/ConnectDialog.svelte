@@ -43,7 +43,8 @@
 {#if $isOpen}
   <div class={`dialog-styles ${dark ? "dark" : "light"}`} on:click={onClose}>
     <div on:click={onClickInside} class="dialog-container">
-      <div>
+      <h1 class="dialog-header">Select Your Wallet ∞</h1>
+      <div class="button-container">
         {#each $providers as provider}
           <button key={provider.meta.id} on:click={() => connect(provider.meta.id)}
                   class={`button-styles ${provider.meta.id}-styles`}>

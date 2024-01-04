@@ -5,9 +5,9 @@ import { IConnector, IWalletConnector, TransferError } from "@connect2ic/core"
 import { err } from "neverthrow"
 
 type Props = {
-  amount: number,
-  to: string,
-  from?: string,
+  amount: number
+  to: string
+  from?: string
 }
 
 export const useTransfer = ({ amount, to, from = undefined }: Props) => {
@@ -23,7 +23,9 @@ export const useTransfer = ({ amount, to, from = undefined }: Props) => {
       return err({ kind: TransferError.NotConnected })
     }
     setLoading(true)
-    const result = await (activeProvider as IConnector & IWalletConnector).requestTransfer({
+    const result = await (
+      activeProvider as IConnector & IWalletConnector
+    ).requestTransfer({
       amount,
       to,
     })

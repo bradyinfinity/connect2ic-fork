@@ -8,7 +8,20 @@ import type { IDL } from "@dfinity/candid"
 import type { CreateActorError, CreateActorResult } from "@connect2ic/core"
 
 // @ts-ignore
-export const useCanister: <T>(canisterName: string, options?: { mode: string }) => readonly [ComputedRef<ActorSubclass<T>>, { canisterDefinition: Ref<{ canisterId: string, idlFactory: IDL.InterfaceFactory }>; error: ComputedRef<{ kind: CreateActorError }>; loading: ComputedRef<boolean> }] = <T>(
+export const useCanister: <T>(
+  canisterName: string,
+  options?: { mode: string },
+) => readonly [
+  ComputedRef<ActorSubclass<T>>,
+  {
+    canisterDefinition: Ref<{
+      canisterId: string
+      idlFactory: IDL.InterfaceFactory
+    }>
+    error: ComputedRef<{ kind: CreateActorError }>
+    loading: ComputedRef<boolean>
+  },
+] = <T>(
   canisterName: string,
   options: { mode: string } = {
     mode: "auto", // "anonymous" | "connected"
@@ -16,17 +29,32 @@ export const useCanister: <T>(canisterName: string, options?: { mode: string }) 
 ) => {
   const { mode } = options
   const { client } = inject(contextKey)
-  const anonymousActorResult = useSelector(client._service, (state) => state.context.anonymousActors[canisterName])
-  const actorResult = useSelector(client._service, (state) => state.context.actors[canisterName])
-  const canisterDefinition = useSelector(client._service, (state) => state.context.canisters[canisterName])
+  const anonymousActorResult = useSelector(
+    client._service,
+    (state) => state.context.anonymousActors[canisterName],
+  )
+  const actorResult = useSelector(
+    client._service,
+    (state) => state.context.actors[canisterName],
+  )
+  const canisterDefinition = useSelector(
+    client._service,
+    (state) => state.context.canisters[canisterName],
+  )
   const { isConnected } = useConnect()
   // @ts-ignore
   const chosenActorResult = computed<CreateActorResult<T>>(() => {
-    return isConnected.value && actorResult.value && mode !== "anonymous" ? actorResult.value : anonymousActorResult.value
+    return isConnected.value && actorResult.value && mode !== "anonymous"
+      ? actorResult.value
+      : anonymousActorResult.value
   })
-  const actor = computed(() => chosenActorResult.value.isOk() ? chosenActorResult.value.value : undefined)
+  const actor = computed(() =>
+    chosenActorResult.value.isOk() ? chosenActorResult.value.value : undefined,
+  )
   const loading = computed(() => !actor.value)
-  const error = computed<{ kind: CreateActorError }>(() => chosenActorResult.value.isErr() ? chosenActorResult.value.error : undefined)
+  const error = computed<{ kind: CreateActorError }>(() =>
+    chosenActorResult.value.isErr() ? chosenActorResult.value.error : undefined,
+  )
 
   return [
     actor,

@@ -5,6 +5,6 @@ import { getContext } from "svelte"
 export function useDialog() {
   const context = getContext<ContextState>(contextKey)
   return {
-    ...context.dialog
+    ...context.dialog,
   }
 }

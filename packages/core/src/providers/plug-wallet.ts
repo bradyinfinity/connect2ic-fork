@@ -6,48 +6,59 @@ import plugLogoDark from "../assets/plugDark.svg"
 import { IDL } from "@dfinity/candid"
 import { ActorSubclass, Agent } from "@dfinity/agent"
 import { Principal } from "@dfinity/principal"
+import { ok, err } from "neverthrow"
 import {
-  ok,
-  err,
-} from "neverthrow"
-import { BalanceError, ConnectError, CreateActorError, DisconnectError, InitError, TransferError } from "./connectors"
+  BalanceError,
+  ConnectError,
+  CreateActorError,
+  DisconnectError,
+  InitError,
+  TransferError,
+} from "./connectors"
 
 type Plug = {
-  createActor: <T>(args: { canisterId: string, interfaceFactory: IDL.InterfaceFactory }) => Promise<ActorSubclass<T>>
+  createActor: <T>(args: {
+    canisterId: string
+    interfaceFactory: IDL.InterfaceFactory
+  }) => Promise<ActorSubclass<T>>
   agent: Agent
-  createAgent: (options: { host: string, whitelist: Array<string> }) => Promise<Agent>
+  createAgent: (options: {
+    host: string
+    whitelist: Array<string>
+  }) => Promise<Agent>
   getPrincipal: () => Promise<Principal>
   isConnected: () => Promise<boolean>
   disconnect: () => Promise<void>
   requestConnect: (Config) => Promise<boolean>
   accountId: string
   requestTransfer: (args: {
-    to: string,
-    amount: number,
+    to: string
+    amount: number
     opts?: {
-      fee?: number,
-      memo?: string,
-      from_subaccount?: number,
+      fee?: number
+      memo?: string
+      from_subaccount?: number
       created_at_time?: {
         timestamp_nanos: number
-      },
-    },
+      }
+    }
   }) => Promise<{
     height: number
   }>
-  requestBalance: () => Promise<Array<{
-    amount: number
-    canisterId: string
-    decimals: number
-    image?: string
-    name: string
-    symbol: string
-  }>>
+  requestBalance: () => Promise<
+    Array<{
+      amount: number
+      canisterId: string
+      decimals: number
+      image?: string
+      name: string
+      symbol: string
+    }>
+  >
   getManagementCanister: () => Promise<ActorSubclass | undefined>
 }
 
 class PlugWallet implements IConnector, IWalletConnector {
-
   public meta = {
     features: ["wallet"],
     icon: {
@@ -59,18 +70,18 @@ class PlugWallet implements IConnector, IWalletConnector {
   }
 
   #config: {
-    whitelist: Array<string>,
-    host: string,
-    dev: boolean,
-    onConnectionUpdate: () => void,
+    whitelist: Array<string>
+    host: string
+    dev: boolean
+    onConnectionUpdate: () => void
   }
   #identity?: any
   #principal?: string
   #client?: any
   #ic?: Plug
   #wallet?: {
-    principal: string;
-    accountId: string;
+    principal: string
+    accountId: string
   }
 
   get identity() {
@@ -99,7 +110,8 @@ class PlugWallet implements IConnector, IWalletConnector {
       host: window.location.origin,
       dev: true,
       onConnectionUpdate: () => {
-        const { agent, principal, accountId } = window.ic.plug.sessionManager.sessionData
+        const { agent, principal, accountId } =
+          window.ic.plug.sessionManager.sessionData
         // TODO: recreate actors
         // TODO: handle account switching
       },
@@ -173,19 +185,28 @@ class PlugWallet implements IConnector, IWalletConnector {
     }
   }
 
-  async createActor<Service>(canisterId: string, idlFactory: IDL.InterfaceFactory) {
+  async createActor<Service>(
+    canisterId: string,
+    idlFactory: IDL.InterfaceFactory,
+  ) {
     if (!this.#ic) {
       return err({ kind: CreateActorError.NotInitialized })
     }
     try {
       // Fetch root key for certificate validation during development
       if (this.#config.dev) {
-        const res = await this.#ic.agent.fetchRootKey().then(() => ok(true)).catch(e => err({ kind: CreateActorError.FetchRootKeyFailed }))
+        const res = await this.#ic.agent
+          .fetchRootKey()
+          .then(() => ok(true))
+          .catch((e) => err({ kind: CreateActorError.FetchRootKeyFailed }))
         if (res.isErr()) {
           return res
         }
       }
-      const actor = await this.#ic.createActor<Service>({ canisterId, interfaceFactory: idlFactory })
+      const actor = await this.#ic.createActor<Service>({
+        canisterId,
+        interfaceFactory: idlFactory,
+      })
       return ok(actor)
     } catch (e) {
       console.error(e)
@@ -298,6 +319,4 @@ class PlugWallet implements IConnector, IWalletConnector {
   // }
 }
 
-export {
-  PlugWallet,
-}
+export { PlugWallet }

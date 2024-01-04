@@ -4,10 +4,7 @@
     "declaration": true,
     "target": "esnext",
     "module": "esnext",
-    "lib": [
-      "esnext",
-      "dom"
-    ],
+    "lib": ["esnext", "dom"],
     "strict": true,
     "noImplicitAny": false,
     "esModuleInterop": true,
@@ -20,9 +17,7 @@
     "importsNotUsedAsValues": "error",
     "preserveValueImports": true
   },
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "**/dist/**", "**/node_modules/**"],
   "ts-node": {
     "transpileOnly": true,

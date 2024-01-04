@@ -6,11 +6,6 @@ export * from "./components"
 
 type Client = ReturnType<typeof createClient>
 
-export type {
-  Client
-}
+export type { Client }
 
-export {
-  Connect2ICProvider,
-  Connect2ICContext,
-}
+export { Connect2ICProvider, Connect2ICContext }

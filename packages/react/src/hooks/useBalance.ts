@@ -26,7 +26,9 @@ export const useBalance = () => {
       setAssets(undefined)
       return
     }
-    const result = await (activeProvider as IConnector & IWalletConnector).queryBalance?.()
+    const result = await (
+      activeProvider as IConnector & IWalletConnector
+    ).queryBalance?.()
     result.match(
       (assets) => {
         setAssets(assets)

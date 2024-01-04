@@ -2,7 +2,7 @@ import { ActorSubclass } from "@dfinity/agent"
 import type { Result } from "neverthrow"
 import type { IDL } from "@dfinity/candid"
 
-type CustomError<T> = { kind: T, message?: string }
+type CustomError<T> = { kind: T; message?: string }
 
 export enum CreateActorError {
   FetchRootKeyFailed = "FETCH_ROOT_KEY_FAILED",
@@ -11,7 +11,10 @@ export enum CreateActorError {
   LocalActorsNotSupported = "LOCAL_ACTORS_NOT_SUPPORTED",
 }
 
-export type CreateActorResult<Service> = Result<ActorSubclass<Service>, CustomError<CreateActorError>>
+export type CreateActorResult<Service> = Result<
+  ActorSubclass<Service>,
+  CustomError<CreateActorError>
+>
 
 export enum ConnectError {
   NotInitialized = "NOT_INITIALIZED",
@@ -24,7 +27,7 @@ export type ConnectResult = Result<boolean, CustomError<ConnectError>>
 
 export enum DisconnectError {
   DisconnectFailed = "DISCONNECT_FAILED",
-  NotInitialized = "NOT_INITIALIZED"
+  NotInitialized = "NOT_INITIALIZED",
 }
 
 export type DisconnectResult = Result<boolean, CustomError<DisconnectError>>
@@ -35,7 +38,10 @@ export enum InitError {
   FetchRootKeyFailed = "FETCH_ROOT_KEY_FAILED",
 }
 
-export type InitResult = Result<{ isConnected: boolean }, CustomError<InitError>>
+export type InitResult = Result<
+  { isConnected: boolean },
+  CustomError<InitError>
+>
 
 export interface IConnector {
   init: () => Promise<InitResult>
@@ -50,8 +56,14 @@ export interface IConnector {
     name: string
   }
   isConnected: () => Promise<boolean>
-  createActor: <Service>(canisterId: string, interfaceFactory: IDL.InterfaceFactory, config?: {}) => Promise<CreateActorResult<Service>>
-  connect: (options?: { delegationModes: Array<string> }) => Promise<ConnectResult>
+  createActor: <Service>(
+    canisterId: string,
+    interfaceFactory: IDL.InterfaceFactory,
+    config?: {},
+  ) => Promise<CreateActorResult<Service>>
+  connect: (options?: {
+    delegationModes: Array<string>
+  }) => Promise<ConnectResult>
   disconnect: () => Promise<DisconnectResult>
   principal?: string
 }
@@ -61,42 +73,51 @@ export enum BalanceError {
   QueryBalanceFailed = "QUERY_BALANCE_FAILED",
 }
 
-export type BalanceResult = Result<Array<{
-  amount: number
-  canisterId: string
-  decimals: number
-  image?: string
-  name: string
-  symbol: string
-}>, CustomError<BalanceError>>
+export type BalanceResult = Result<
+  Array<{
+    amount: number
+    canisterId: string
+    decimals: number
+    image?: string
+    name: string
+    symbol: string
+  }>,
+  CustomError<BalanceError>
+>
 
 export enum TokensError {
   NotInitialized = "NOT_INITIALIZED",
   QueryBalanceFailed = "QUERY_BALANCE_FAILED",
 }
 
-export type TokensResult = Result<Array<{
-  amount: number
-  canisterId: string
-  decimals: number
-  image?: string
-  name: string
-  symbol: string
-}>, CustomError<TokensError>>
+export type TokensResult = Result<
+  Array<{
+    amount: number
+    canisterId: string
+    decimals: number
+    image?: string
+    name: string
+    symbol: string
+  }>,
+  CustomError<TokensError>
+>
 
 export enum NFTsError {
   NotInitialized = "NOT_INITIALIZED",
   QueryBalanceFailed = "QUERY_BALANCE_FAILED",
 }
 
-export type NFTsResult = Result<Array<{
-  amount: number
-  canisterId: string
-  decimals: number
-  image?: string
-  name: string
-  symbol: string
-}>, CustomError<NFTsError>>
+export type NFTsResult = Result<
+  Array<{
+    amount: number
+    canisterId: string
+    decimals: number
+    image?: string
+    name: string
+    symbol: string
+  }>,
+  CustomError<NFTsError>
+>
 
 export enum TransferError {
   InsufficientBalance = "INSUFFICIENT_BALANCE",
@@ -107,12 +128,18 @@ export enum TransferError {
   NotConnected = "NOT_CONNECTED",
 }
 
-export type TransferResult = Result<{ height?: number; transactionId?: string; }, CustomError<TransferError>>
-export type NFTTransferResult = Result<{ transactionId?: string; }, CustomError<TransferError>>
+export type TransferResult = Result<
+  { height?: number; transactionId?: string },
+  CustomError<TransferError>
+>
+export type NFTTransferResult = Result<
+  { transactionId?: string },
+  CustomError<TransferError>
+>
 
 export enum SignError {
   NotConnected = "NOT_CONNECTED",
-  NotInitialized = "NOT_INITIALIZED"
+  NotInitialized = "NOT_INITIALIZED",
 }
 
 export type SignResult = Result<{ height: number }, CustomError<SignError>>
@@ -131,10 +158,10 @@ export interface IWalletConnector {
   }) => Promise<TransferResult>
   requestTransferNFT?: (args: {
     to: string
-    tokenIdentifier: string;
-    tokenIndex: number;
-    canisterId: string;
-    standard: "ICP" | "DIP20" | "EXT" | "DRC20" | string;
+    tokenIdentifier: string
+    tokenIndex: number
+    canisterId: string
+    standard: "ICP" | "DIP20" | "EXT" | "DRC20" | string
     fee?: number
     memo?: bigint
     createdAtTime?: Date
@@ -158,4 +185,3 @@ export interface IWalletConnector {
 // type ProviderOptions = {
 //   connector: IConnector,
 // }
-

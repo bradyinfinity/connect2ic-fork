@@ -22,7 +22,7 @@
     "@xstate/svelte": "^0.2.1"
   },
   "peerDependencies": {
-    "@connect2ic/core": "*"
+    "@connect2ic/core": "file:../core"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.9",

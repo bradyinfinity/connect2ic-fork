@@ -22,7 +22,6 @@ provide(contextKey, {
   dialog,
   client,
 })
-
 </script>
 <template>
   <slot></slot>

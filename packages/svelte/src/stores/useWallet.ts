@@ -9,15 +9,20 @@ import type { Readable } from "svelte/store"
 
 export const useWallet = () => {
   const { isConnected, activeProvider } = useConnect()
-  const supportsWallet = derived(activeProvider, ($activeProvider, set) => set(!!$activeProvider?.meta.features.includes("wallet")))
-  const wallet: Readable<IConnector & Partial<IWalletConnector> | undefined> = derived(
-    [isConnected, supportsWallet, activeProvider],
-    ([$isConnected, $supportsWallet, $activeProvider], set) => {
-      set(
-        $isConnected && $supportsWallet && $activeProvider ? ($activeProvider as IConnector & Partial<IWalletConnector>) : undefined,
-      )
-    },
+  const supportsWallet = derived(activeProvider, ($activeProvider, set) =>
+    set(!!$activeProvider?.meta.features.includes("wallet")),
   )
+  const wallet: Readable<(IConnector & Partial<IWalletConnector>) | undefined> =
+    derived(
+      [isConnected, supportsWallet, activeProvider],
+      ([$isConnected, $supportsWallet, $activeProvider], set) => {
+        set(
+          $isConnected && $supportsWallet && $activeProvider
+            ? ($activeProvider as IConnector & Partial<IWalletConnector>)
+            : undefined,
+        )
+      },
+    )
   // TODO: fix
   const loading = writable()
   const error = writable()

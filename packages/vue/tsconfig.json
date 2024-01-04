@@ -3,10 +3,7 @@
     "allowJs": true,
     "target": "esnext",
     "module": "esnext",
-    "lib": [
-      "esnext",
-      "dom"
-    ],
+    "lib": ["esnext", "dom"],
     "jsx": "preserve",
     "useDefineForClassFields": true,
     "strict": false,
@@ -35,11 +32,7 @@
     "tests/**/*.tsx",
     "src/index.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "**/dist/**",
-    "**/node_modules/**"
-  ],
+  "exclude": ["node_modules", "**/dist/**", "**/node_modules/**"],
   "ts-node": {
     "transpileOnly": true,
     "transpiler": "ts-node/transpilers/swc-experimental"

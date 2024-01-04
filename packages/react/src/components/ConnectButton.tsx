@@ -1,7 +1,10 @@
-import React, { CSSProperties, PropsWithChildren, useEffect, useState } from "react"
-import {
-  useConnect, useDialog,
-} from "../index"
+import React, {
+  CSSProperties,
+  PropsWithChildren,
+  useEffect,
+  useState,
+} from "react"
+import { useConnect, useDialog } from "../index"
 
 //@ts-ignore
 const isICX = !!window.icx
@@ -16,10 +19,8 @@ const ConnectButton: React.FC<PropsWithChildren<Props>> = (props) => {
   const {
     style = {},
     dark = false,
-    onConnect = () => {
-    },
-    onDisconnect = () => {
-    },
+    onConnect = () => {},
+    onDisconnect = () => {},
     children,
   } = props
 
@@ -32,7 +33,11 @@ const ConnectButton: React.FC<PropsWithChildren<Props>> = (props) => {
   return (
     <>
       {!isConnected ? (
-        <button onClick={() => isICX ? connect("icx") : dialog.open()} style={style} className="connect-button">
+        <button
+          onClick={() => (isICX ? connect("icx") : dialog.open())}
+          style={style}
+          className="connect-button"
+        >
           {children ?? "Connect"}
         </button>
       ) : null}

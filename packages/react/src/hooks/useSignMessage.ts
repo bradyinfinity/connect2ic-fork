@@ -7,7 +7,7 @@ type Props = {
 
 export const useSignMessage = ({ message }: Props) => {
   // TODO: check if supported or not
-  const {activeProvider} = useConnect()
+  const { activeProvider } = useConnect()
   const [wallet] = useWallet()
 
   const signMessage = () => {

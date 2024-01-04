@@ -42,16 +42,26 @@ const handleEsc = (event) => {
 }
 onMounted(() => window.addEventListener("keydown", handleEsc))
 onUnmounted(() => window.removeEventListener("keydown", handleEsc))
-
 </script>
 
 <template>
-  <div v-if="isOpen" :class="`dialog-styles ${dark ? ' dark' : ' light'}`" @click="onClose">
+  <div
+    v-if="isOpen"
+    :class="`dialog-styles ${dark ? ' dark' : ' light'}`"
+    @click="onClose"
+  >
     <div @click="onClickInside" class="dialog-container">
       <div>
-        <button v-for="provider in providers" :key="provider.meta.id" @click="() => connect(provider.meta.id)"
-                :class="`button-styles ${provider.meta.id}-styles`">
-          <img class="img-styles" :src="dark ? provider.meta.icon.dark : provider.meta.icon.light" />
+        <button
+          v-for="provider in providers"
+          :key="provider.meta.id"
+          @click="() => connect(provider.meta.id)"
+          :class="`button-styles ${provider.meta.id}-styles`"
+        >
+          <img
+            class="img-styles"
+            :src="dark ? provider.meta.icon.dark : provider.meta.icon.light"
+          />
           <div>
             <span class="button-label">{{ provider.meta.name }}</span>
           </div>

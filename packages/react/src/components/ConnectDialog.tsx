@@ -56,14 +56,26 @@ const ConnectDialog: React.FC<PropsWithChildren<Props>> = (props) => {
 
   return dialog.isOpen ? (
     <>
-      <div className={`dialog-styles ${dark ? "dark" : "light"}`} onClick={onClose}>
+      <div
+        className={`dialog-styles ${dark ? "dark" : "light"}`}
+        onClick={onClose}
+      >
         <div onClick={onClickInside} className="dialog-container">
           <div>
             {providers.map((provider) => {
               return (
-                <button key={provider.meta.id} onClick={() => connect(provider.meta.id)}
-                        className={`button-styles ${provider.meta.id}-styles`} {...props}>
-                  <img className={"img-styles"} src={dark ? provider.meta.icon.dark : provider.meta.icon.light} />
+                <button
+                  key={provider.meta.id}
+                  onClick={() => connect(provider.meta.id)}
+                  className={`button-styles ${provider.meta.id}-styles`}
+                  {...props}
+                >
+                  <img
+                    className={"img-styles"}
+                    src={
+                      dark ? provider.meta.icon.dark : provider.meta.icon.light
+                    }
+                  />
                   <div>
                     <span className="button-label">{provider.meta.name}</span>
                   </div>

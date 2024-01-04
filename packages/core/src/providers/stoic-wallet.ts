@@ -6,14 +6,15 @@ import stoicLogoLight from "../assets/stoic.png"
 // @ts-ignore
 import stoicLogoDark from "../assets/stoic.png"
 import { IDL } from "@dfinity/candid"
+import { ok, err } from "neverthrow"
 import {
-  ok,
-  err,
-} from "neverthrow"
-import { ConnectError, CreateActorError, DisconnectError, InitError } from "./connectors"
+  ConnectError,
+  CreateActorError,
+  DisconnectError,
+  InitError,
+} from "./connectors"
 
 class StoicWallet implements IConnector {
-
   public meta = {
     features: [],
     icon: {
@@ -25,10 +26,10 @@ class StoicWallet implements IConnector {
   }
 
   #config: {
-    whitelist: Array<string>,
-    providerUrl: string,
-    host: string,
-    dev: Boolean,
+    whitelist: Array<string>
+    providerUrl: string
+    host: string
+    dev: Boolean
   }
   #identity?: any
   #principal?: string
@@ -74,7 +75,10 @@ class StoicWallet implements IConnector {
     }
   }
 
-  async createActor<Service>(canisterId: string, idlFactory: IDL.InterfaceFactory) {
+  async createActor<Service>(
+    canisterId: string,
+    idlFactory: IDL.InterfaceFactory,
+  ) {
     try {
       // TODO: allow passing identity?
       const agent = new HttpAgent({
@@ -84,7 +88,10 @@ class StoicWallet implements IConnector {
 
       if (this.#config.dev) {
         // Fetch root key for certificate validation during development
-        const res = await agent.fetchRootKey().then(() => ok(true)).catch(e => err({ kind: CreateActorError.FetchRootKeyFailed }))
+        const res = await agent
+          .fetchRootKey()
+          .then(() => ok(true))
+          .catch((e) => err({ kind: CreateActorError.FetchRootKeyFailed }))
         if (res.isErr()) {
           return res
         }
@@ -133,6 +140,4 @@ class StoicWallet implements IConnector {
   }
 }
 
-export {
-  StoicWallet,
-}
+export { StoicWallet }

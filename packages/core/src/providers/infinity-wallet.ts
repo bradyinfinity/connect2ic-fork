@@ -7,16 +7,24 @@ import infinityLogoLight from "../assets/infinity.png"
 import infinityLogoDark from "../assets/infinity.png"
 import type { Principal } from "@dfinity/principal"
 import { err, ok } from "neverthrow"
-import { ConnectError, CreateActorError, DisconnectError, InitError } from "./connectors"
+import {
+  ConnectError,
+  CreateActorError,
+  DisconnectError,
+  InitError,
+} from "./connectors"
 
 type Config = {
-  whitelist: Array<string>,
-  host: string,
-  dev: Boolean,
+  whitelist: Array<string>
+  host: string
+  dev: Boolean
 }
 
 type IC = {
-  createActor: <T>(args: { canisterId: string, interfaceFactory: IDL.InterfaceFactory }) => Promise<ActorSubclass<T>>
+  createActor: <T>(args: {
+    canisterId: string
+    interfaceFactory: IDL.InterfaceFactory
+  }) => Promise<ActorSubclass<T>>
   agent: Agent
   getPrincipal: () => Promise<Principal>
   isConnected: () => Promise<boolean>
@@ -25,7 +33,6 @@ type IC = {
 }
 
 class InfinityWallet implements IConnector {
-
   public meta = {
     features: [],
     icon: {
@@ -33,7 +40,7 @@ class InfinityWallet implements IConnector {
       dark: infinityLogoDark,
     },
     id: "infinity",
-    name: "Infinity Wallet",
+    name: "Bitfinity Wallet",
   }
 
   #config: Config
@@ -109,7 +116,10 @@ class InfinityWallet implements IConnector {
     }
   }
 
-  async createActor<Service>(canisterId: string, idlFactory: IDL.InterfaceFactory) {
+  async createActor<Service>(
+    canisterId: string,
+    idlFactory: IDL.InterfaceFactory,
+  ) {
     if (!this.#ic) {
       return err({ kind: CreateActorError.NotInitialized })
     }
@@ -120,7 +130,10 @@ class InfinityWallet implements IConnector {
           kind: CreateActorError.LocalActorsNotSupported,
         })
       }
-      const actor = await this.#ic.createActor<Service>({ canisterId, interfaceFactory: idlFactory })
+      const actor = await this.#ic.createActor<Service>({
+        canisterId,
+        interfaceFactory: idlFactory,
+      })
       return ok(actor)
     } catch (e) {
       console.error(e)
@@ -128,12 +141,14 @@ class InfinityWallet implements IConnector {
     }
   }
 
-
   async connect() {
     try {
       if (!this.#ic) {
         // TODO: customizable behaviour?
-        window.open("https://chrome.google.com/webstore/detail/infinity-wallet/jnldfbidonfeldmalbflbmlebbipcnle", "_blank")
+        window.open(
+          "https://chrome.google.com/webstore/detail/infinity-wallet/jnldfbidonfeldmalbflbmlebbipcnle",
+          "_blank",
+        )
         return err({ kind: ConnectError.NotInstalled })
       }
       await this.#ic.requestConnect(this.#config)
@@ -196,6 +211,4 @@ class InfinityWallet implements IConnector {
   // }
 }
 
-export {
-  InfinityWallet,
-}
+export { InfinityWallet }

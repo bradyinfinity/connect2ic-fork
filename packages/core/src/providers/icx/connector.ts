@@ -6,10 +6,7 @@ import { AstroXWebViewHandler } from "@astrox/sdk-webview"
 import astroXLogoLight from "../../assets/astrox_light.svg"
 // @ts-ignore
 import astroXLogoDark from "../../assets/astrox.png"
-import {
-  ok,
-  err, Result,
-} from "neverthrow"
+import { ok, err, Result } from "neverthrow"
 import {
   SignError,
   BalanceError,
@@ -21,11 +18,13 @@ import {
   TokensError,
   NFTsError,
 } from "../connectors"
-import { TransactionMessageKind, TransactionType } from "@astrox/sdk-webview/build/types"
+import {
+  TransactionMessageKind,
+  TransactionType,
+} from "@astrox/sdk-webview/build/types"
 import { DelegationMode } from "@astrox/sdk-webview/build/types"
 
 class ICX implements IConnector, IWalletConnector {
-
   public meta = {
     features: ["wallet"],
     icon: {
@@ -50,16 +49,16 @@ class ICX implements IConnector, IWalletConnector {
   #ic: AstroXWebViewHandler
   #principal?: string
   #supportedTokenList: Array<{
-    symbol: string;
-    standard: string;
-    decimals: number;
-    fee: string;
-    name: string;
-    canisterId: string;
+    symbol: string
+    standard: string
+    decimals: number
+    fee: string
+    name: string
+    canisterId: string
   }> = []
   #wallet?: {
-    principal: string;
-    accountId: string;
+    principal: string
+    accountId: string
   }
 
   get principal() {
@@ -130,7 +129,11 @@ class ICX implements IConnector, IWalletConnector {
   }
 
   // TODO: export & use types from astrox/connection instead of dfinity/agent
-  async createActor<Service>(canisterId: string, idlFactory: IDL.InterfaceFactory, config = {}): Promise<Result<ActorSubclass<Service>, { kind: CreateActorError; }>> {
+  async createActor<Service>(
+    canisterId: string,
+    idlFactory: IDL.InterfaceFactory,
+    config = {},
+  ): Promise<Result<ActorSubclass<Service>, { kind: CreateActorError }>> {
     try {
       if (!this.#ic) {
         return err({ kind: CreateActorError.NotInitialized })
@@ -183,11 +186,11 @@ class ICX implements IConnector, IWalletConnector {
   }
 
   async requestTransferNFT(args: {
-    tokenIdentifier: string;
-    tokenIndex: number;
-    canisterId: string;
-    to: string;
-    standard: string;
+    tokenIdentifier: string
+    tokenIndex: number
+    canisterId: string
+    to: string
+    standard: string
     memo?: bigint | Array<number>
     fee?: number
     createdAtTime?: Date
@@ -259,16 +262,16 @@ class ICX implements IConnector, IWalletConnector {
       fromSubAccount = 0,
     } = opts
     try {
-      const tokenInfo = this.#supportedTokenList.find(({
-                                                         symbol: tokenSymbol,
-                                                       }) => symbol === tokenSymbol)
+      const tokenInfo = this.#supportedTokenList.find(
+        ({ symbol: tokenSymbol }) => symbol === tokenSymbol,
+      )
       if (!tokenInfo) {
         return err({ kind: TransferError.TokenNotSupported })
       }
       // @ts-ignore
       const response = await this.#ic?.requestTransfer({
         //@ts-ignore
-        amount: BigInt(amount * (10 ** tokenInfo.decimals)),
+        amount: BigInt(amount * 10 ** tokenInfo.decimals),
         to,
         symbol,
         standard,
@@ -287,7 +290,9 @@ class ICX implements IConnector, IWalletConnector {
       if (response.kind === TransactionMessageKind.success) {
         return ok({
           ...response.payload,
-          height: response.payload.blockHeight ?? Number(response.payload.blockHeight),
+          height:
+            response.payload.blockHeight ??
+            Number(response.payload.blockHeight),
         })
       }
       return err({ kind: TransferError.TransferFailed })
@@ -303,7 +308,9 @@ class ICX implements IConnector, IWalletConnector {
         return err({ kind: BalanceError.NotInitialized })
       }
       const response = await this.#ic.queryBalance()
-      response.forEach(token => token.amount = token.amount / (10 ** token.decimals))
+      response.forEach(
+        (token) => (token.amount = token.amount / 10 ** token.decimals),
+      )
       return ok(response)
     } catch (e) {
       console.error(e)
@@ -343,6 +350,4 @@ class ICX implements IConnector, IWalletConnector {
   // batchTransactions: (...args) => this.#ic.batchTransactions(...args),
 }
 
-export {
-  ICX,
-}
+export { ICX }

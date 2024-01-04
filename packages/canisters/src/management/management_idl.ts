@@ -4,20 +4,20 @@
 /* tslint:disable */
 // @ts-ignore
 export default ({ IDL }) => {
-  const canister_id = IDL.Principal;
+  const canister_id = IDL.Principal
   const definite_canister_settings = IDL.Record({
     controllers: IDL.Vec(IDL.Principal),
     freezing_threshold: IDL.Nat,
     memory_allocation: IDL.Nat,
     compute_allocation: IDL.Nat,
-  });
+  })
   const canister_settings = IDL.Record({
     controllers: IDL.Opt(IDL.Vec(IDL.Principal)),
     freezing_threshold: IDL.Opt(IDL.Nat),
     memory_allocation: IDL.Opt(IDL.Nat),
     compute_allocation: IDL.Opt(IDL.Nat),
-  });
-  const wasm_module = IDL.Vec(IDL.Nat8);
+  })
+  const wasm_module = IDL.Vec(IDL.Nat8)
   return IDL.Service({
     canister_status: IDL.Func(
       [IDL.Record({ canister_id: canister_id })],
@@ -41,8 +41,16 @@ export default ({ IDL }) => {
       [IDL.Record({ canister_id: canister_id })],
       [],
     ),
-    delete_canister: IDL.Func([IDL.Record({ canister_id: canister_id })], [], []),
-    deposit_cycles: IDL.Func([IDL.Record({ canister_id: canister_id })], [], []),
+    delete_canister: IDL.Func(
+      [IDL.Record({ canister_id: canister_id })],
+      [],
+      [],
+    ),
+    deposit_cycles: IDL.Func(
+      [IDL.Record({ canister_id: canister_id })],
+      [],
+      [],
+    ),
     install_code: IDL.Func(
       [
         IDL.Record({
@@ -75,9 +83,17 @@ export default ({ IDL }) => {
       [],
     ),
     raw_rand: IDL.Func([], [IDL.Vec(IDL.Nat8)], []),
-    start_canister: IDL.Func([IDL.Record({ canister_id: canister_id })], [], []),
+    start_canister: IDL.Func(
+      [IDL.Record({ canister_id: canister_id })],
+      [],
+      [],
+    ),
     stop_canister: IDL.Func([IDL.Record({ canister_id: canister_id })], [], []),
-    uninstall_code: IDL.Func([IDL.Record({ canister_id: canister_id })], [], []),
+    uninstall_code: IDL.Func(
+      [IDL.Record({ canister_id: canister_id })],
+      [],
+      [],
+    ),
     update_settings: IDL.Func(
       [
         IDL.Record({
@@ -88,5 +104,5 @@ export default ({ IDL }) => {
       [],
       [],
     ),
-  });
-};
+  })
+}

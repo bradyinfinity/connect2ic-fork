@@ -1,20 +1,25 @@
 import { IC } from "@astrox/sdk-web"
 import type { IDL } from "@dfinity/candid"
 import type { ActorSubclass, Identity } from "@dfinity/agent"
-import {
-  PermissionsType,
-} from "@astrox/connection/lib/esm/types"
+import { PermissionsType } from "@astrox/connection/lib/esm/types"
 import type { IConnector, IWalletConnector } from "./connectors"
 // @ts-ignore
 import astroXLogoLight from "../assets/astrox_light.svg"
 // @ts-ignore
 import astroXLogoDark from "../assets/astrox.png"
+import { ok, err, Result } from "neverthrow"
 import {
-  ok,
-  err, Result,
-} from "neverthrow"
-import { BalanceError, ConnectError, CreateActorError, DisconnectError, InitError, TransferError } from "./connectors"
-import { DelegationMode, TransactionMessageKind } from "@astrox/sdk-web/build/types"
+  BalanceError,
+  ConnectError,
+  CreateActorError,
+  DisconnectError,
+  InitError,
+  TransferError,
+} from "./connectors"
+import {
+  DelegationMode,
+  TransactionMessageKind,
+} from "@astrox/sdk-web/build/types"
 
 const balanceFromString = (balance: string, decimal = 8): bigint => {
   const list = balance.split(".")
@@ -31,7 +36,6 @@ const balanceFromString = (balance: string, decimal = 8): bigint => {
 }
 
 class AstroX implements IConnector, IWalletConnector {
-
   public meta = {
     features: ["wallet"],
     icon: {
@@ -39,17 +43,17 @@ class AstroX implements IConnector, IWalletConnector {
       dark: astroXLogoDark,
     },
     id: "astrox",
-    name: "AstroX ME",
+    name: "ME Wallet",
   }
 
   #config: {
-    whitelist: Array<string>,
-    providerUrl: string,
-    ledgerCanisterId: string,
-    ledgerHost?: string,
-    noUnify?: boolean,
-    host: string,
-    dev: boolean,
+    whitelist: Array<string>
+    providerUrl: string
+    ledgerCanisterId: string
+    ledgerHost?: string
+    noUnify?: boolean
+    host: string
+    dev: boolean
     delegationModes?: Array<DelegationMode>
     customDomain?: string
   }
@@ -57,8 +61,8 @@ class AstroX implements IConnector, IWalletConnector {
   #principal?: string
   #ic?: IC
   #wallet?: {
-    principal: string;
-    accountId: string;
+    principal: string
+    accountId: string
   }
 
   get principal() {
@@ -68,7 +72,6 @@ class AstroX implements IConnector, IWalletConnector {
   get wallets() {
     return this.#wallet ? [this.#wallet] : []
   }
-
 
   constructor(userConfig = {}) {
     this.#config = {
@@ -141,7 +144,10 @@ class AstroX implements IConnector, IWalletConnector {
   }
 
   // TODO: export & use types from astrox/connection instead of dfinity/agent
-  async createActor<Service>(canisterId: string, idlFactory: IDL.InterfaceFactory): Promise<Result<ActorSubclass<Service>, { kind: CreateActorError; }>> {
+  async createActor<Service>(
+    canisterId: string,
+    idlFactory: IDL.InterfaceFactory,
+  ): Promise<Result<ActorSubclass<Service>, { kind: CreateActorError }>> {
     try {
       if (!this.#ic) {
         return err({ kind: CreateActorError.NotInitialized })
@@ -221,7 +227,7 @@ class AstroX implements IConnector, IWalletConnector {
     } = opts
     try {
       const result = await this.#ic?.requestTransfer({
-        amount: BigInt(amount * (10 ** decimals)),
+        amount: BigInt(amount * 10 ** decimals),
         to,
         standard,
         symbol,
@@ -257,11 +263,11 @@ class AstroX implements IConnector, IWalletConnector {
   }
 
   async requestTransferNFT(args: {
-    tokenIdentifier: string;
-    tokenIndex: number;
-    canisterId: string;
-    to: string;
-    standard: string;
+    tokenIdentifier: string
+    tokenIndex: number
+    canisterId: string
+    to: string
+    standard: string
     fee?: number
     memo?: bigint | Array<number>
     createdAtTime?: Date
@@ -296,7 +302,11 @@ class AstroX implements IConnector, IWalletConnector {
         },
         symbol: "",
       })
-      if (!response || typeof response === "string" || response.kind === TransactionMessageKind.fail) {
+      if (
+        !response ||
+        typeof response === "string" ||
+        response.kind === TransactionMessageKind.fail
+      ) {
         return err({ kind: TransferError.TransferFailed })
       }
       if (response.kind === TransactionMessageKind.success) {
@@ -313,19 +323,20 @@ class AstroX implements IConnector, IWalletConnector {
     }
   }
 
-
   async queryBalance() {
     try {
       const ICPBalance = Number(await this.#ic?.queryBalance()) ?? 0
-      return ok([{
-        amount: ICPBalance / 100000000,
-        canisterId: this.#config.ledgerCanisterId,
-        decimals: 8,
-        // TODO: plug returns image?
-        // image: "Dfinity.svg",
-        name: "ICP",
-        symbol: "ICP",
-      }])
+      return ok([
+        {
+          amount: ICPBalance / 100000000,
+          canisterId: this.#config.ledgerCanisterId,
+          decimals: 8,
+          // TODO: plug returns image?
+          // image: "Dfinity.svg",
+          name: "ICP",
+          symbol: "ICP",
+        },
+      ])
     } catch (e) {
       console.error(e)
       return err({ kind: BalanceError.QueryBalanceFailed })
@@ -343,6 +354,4 @@ class AstroX implements IConnector, IWalletConnector {
   // batchTransactions: (...args) => this.#ic.batchTransactions(...args),
 }
 
-export {
-  AstroX,
-}
+export { AstroX }

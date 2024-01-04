@@ -17,13 +17,13 @@
 </script>
 
 {#if $isConnected}
-  <button style={style} class="connect-button" on:click={() => disconnect()}>
-    Disconnect
+  <button style={style} class="disconnect-button" on:click={() => disconnect()}>
+    Logout
   </button>
 {/if}
 
 {#if !$isConnected}
   <button style={style} class="connect-button" on:click={() => isICX ? connect("icx") : open()}>
-    Connect
+    Connect Wallet
   </button>
 {/if}

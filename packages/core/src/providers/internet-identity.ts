@@ -7,14 +7,15 @@ import dfinityLogoLight from "../assets/dfinity.svg"
 // @ts-ignore
 import dfinityLogoDark from "../assets/dfinity.svg"
 import { IDL } from "@dfinity/candid"
+import { ok, err } from "neverthrow"
 import {
-  ok,
-  err,
-} from "neverthrow"
-import { ConnectError, CreateActorError, DisconnectError, InitError } from "./connectors"
+  ConnectError,
+  CreateActorError,
+  DisconnectError,
+  InitError,
+} from "./connectors"
 
 class InternetIdentity implements IConnector {
-
   public meta = {
     features: [],
     icon: {
@@ -26,10 +27,10 @@ class InternetIdentity implements IConnector {
   }
 
   #config: {
-    whitelist: Array<string>,
-    host: string,
-    providerUrl: string,
-    dev: boolean,
+    whitelist: Array<string>
+    host: string
+    providerUrl: string
+    dev: boolean
   }
   #identity?: Identity
   #principal?: string
@@ -99,7 +100,10 @@ class InternetIdentity implements IConnector {
       if (this.#config.dev) {
         // Fetch root key for certificate validation during development
         // Fetch root key for certificate validation during development
-        const res = await agent.fetchRootKey().then(() => ok(true)).catch(e => err({ kind: CreateActorError.FetchRootKeyFailed }))
+        const res = await agent
+          .fetchRootKey()
+          .then(() => ok(true))
+          .catch((e) => err({ kind: CreateActorError.FetchRootKeyFailed }))
         if (res.isErr()) {
           return res
         }
@@ -148,6 +152,4 @@ class InternetIdentity implements IConnector {
   }
 }
 
-export {
-  InternetIdentity,
-}
+export { InternetIdentity }

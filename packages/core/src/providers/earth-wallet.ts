@@ -7,7 +7,6 @@ import earthLogoDark from "../assets/earth.png"
 import { ActorSubclass } from "@dfinity/agent"
 
 class EarthWallet implements IConnector, IWalletConnector {
-
   public meta = {
     features: [],
     icon: {
@@ -19,9 +18,9 @@ class EarthWallet implements IConnector, IWalletConnector {
   }
 
   #config: {
-    whitelist: Array<string>,
-    host: string,
-    dev: Boolean,
+    whitelist: Array<string>
+    host: string
+    dev: Boolean
   }
   #identity?: any
   #principal?: string
@@ -63,9 +62,7 @@ class EarthWallet implements IConnector, IWalletConnector {
     const isConnected = false
     if (isConnected) {
       try {
-        const {
-          principalId,
-        } = await this.#ic.getAddressMeta()
+        const { principalId } = await this.#ic.getAddressMeta()
         this.#principal = principalId
       } catch (e) {
         console.error(e)
@@ -82,28 +79,33 @@ class EarthWallet implements IConnector, IWalletConnector {
     // return await this.#ic.isConnected()
   }
 
-  async createActor<Service>(canisterId: string, idlFactory: IDL.InterfaceFactory): Promise<ActorSubclass<Service> | undefined> {
+  async createActor<Service>(
+    canisterId: string,
+    idlFactory: IDL.InterfaceFactory,
+  ): Promise<ActorSubclass<Service> | undefined> {
     // Fetch root key for certificate validation during development
     if (this.#config.dev) {
       // await this.#ic.agent.fetchRootKey()
     }
     // const service = idlFactory({ IDL })
-    const proxy = new Proxy({}, {
-      get(target, method, receiver) {
-        return async (...args) => {
-          const response = await window.earth.sign({
-            canisterId,
-            method,
-            args,
-          })
-          return response
-        }
+    const proxy = new Proxy(
+      {},
+      {
+        get(target, method, receiver) {
+          return async (...args) => {
+            const response = await window.earth.sign({
+              canisterId,
+              method,
+              args,
+            })
+            return response
+          }
+        },
       },
-    })
+    )
 
     return proxy
   }
-
 
   async connect() {
     this.#ic = window.earth
@@ -113,9 +115,7 @@ class EarthWallet implements IConnector, IWalletConnector {
     }
     try {
       await this.#ic.connect(this.#config)
-      const {
-        principalId,
-      } = await this.#ic.getAddressMeta()
+      const { principalId } = await this.#ic.getAddressMeta()
       this.#principal = principalId
     } catch (e) {
       // TODO: handle
@@ -150,6 +150,4 @@ class EarthWallet implements IConnector, IWalletConnector {
   // }
 }
 
-export {
-  EarthWallet,
-}
+export { EarthWallet }

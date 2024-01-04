@@ -4,9 +4,9 @@ import { TransferError } from "@connect2ic/core/providers"
 import { err } from "neverthrow"
 
 type Props = {
-  amount: number,
-  to: string,
-  from?: string,
+  amount: number
+  to: string
+  from?: string
 }
 
 export const useTransfer = ({ amount, to }: Props) => {
