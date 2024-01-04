@@ -16,7 +16,7 @@
     "@babel/preset-env": "^7.17.10",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
-    "@preconstruct/cli": "^2.1.5",
+    "@preconstruct/cli": "^2.8.2",
     "babel-plugin-inline-import": "^3.0.0",
     "babel-plugin-inline-import-data-uri": "^1.0.1",
     "prettier": "^2.5.1",
