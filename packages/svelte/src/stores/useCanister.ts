@@ -43,15 +43,15 @@ export const useCanister: <
   )
   const { isConnected } = useConnect()
   const chosenActorResult: Readable<CreateActorResult<Service>> = derived(
-  [isConnected, actorResult, anonymousActorResult],
+    [isConnected, actorResult, anonymousActorResult],
     ([$isConnected, $actorResult, $anonymousActorResult], set) => {
       set(
         $isConnected && $actorResult && mode !== "anonymous"
-          ? $actorResult as CreateActorResult<Service>
-          : $anonymousActorResult as CreateActorResult<Service>,
-      );
+          ? ($actorResult as CreateActorResult<Service>)
+          : ($anonymousActorResult as CreateActorResult<Service>),
+      )
     },
-  );
+  )
   const actor: Readable<ActorSubclass<Service> | undefined> = derived(
     [chosenActorResult],
     ([$chosenActorResult], set) => {
