@@ -1,5 +1,7 @@
 # !! Forked from [Connect2IC](https://github.com/Connect2IC/connect2ic) !!
 
+Too many bugs 🪲😞 Can't use this..
+
 <img height="60" src="https://connect2ic.github.io/docs/img/connect2ic_logo_light.png" />
 
 # Connect2IC
